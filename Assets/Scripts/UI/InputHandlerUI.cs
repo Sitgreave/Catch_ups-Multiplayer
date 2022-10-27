@@ -1,28 +1,34 @@
 
-using Menu;
+
 using UI;
 using UnityEngine;
 
-public class InputHandlerUI : MonoBehaviour
+namespace BH_UI.InputHandler
 {
-    [SerializeField] private PanelManager _panelManager;
-    [SerializeField] private MenuPanel _menuPanel;
-    private void Update()
+    public class InputHandlerUI : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-           
-            if (MenuNotOpened())
-            {
-                _panelManager.OpenPanel(_menuPanel);
-               
-            }
-            else _menuPanel.Close();
-        };
-    }
+        [SerializeField] private PanelManager _panelManager;
+        [SerializeField] private MenuPanel _menuPanel;
 
-    private bool MenuNotOpened()
-    {
-        return !_menuPanel.gameObject.activeSelf;
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+
+                if (MenuNotOpened())
+                {
+                    _panelManager.OpenPanel(_menuPanel);
+
+                }
+                else _menuPanel.Close();
+            }
+
+            ;
+        }
+
+        private bool MenuNotOpened()
+        {
+            return !_menuPanel.gameObject.activeSelf;
+        }
     }
 }

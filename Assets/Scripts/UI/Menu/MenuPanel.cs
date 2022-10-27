@@ -1,27 +1,22 @@
-using System;
-using DefaultNamespace;
-using Player.Character;
-using Player.Character.InputHandle.Switcher;
-using UnityEngine;
 
-namespace Menu
+using Switcher;
+
+namespace BH_UI
 {
     public class MenuPanel: UIPanel
     {
-        [SerializeField] private CursorSwitcher _cursorSwitcher;
-        [SerializeField] private InputSwitcher _inputSwitcher;
         public override void OnOpen()
         {
-            _cursorSwitcher.CursorOn();
-           _inputSwitcher.DisableInput();
+            CursorSwitcher.Instance.TurnOn();
+            InputSwitcher.Instance.TurnOff();
             
         }
 
         public override void Close()
         {
             gameObject.SetActive(false);
-            _cursorSwitcher.CursorOff();
-            _inputSwitcher.EnableInput();
+            CursorSwitcher.Instance.TurnOff();
+            InputSwitcher.Instance.TurnOn();
         }
     }
 }

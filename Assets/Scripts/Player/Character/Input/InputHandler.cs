@@ -1,45 +1,51 @@
-
-using Player.Character.InputHandle.Switcher;
+using System;
+using AbstractSingleton;
+using BH_Player.Moving;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Player.Character.InputHandle
+
+namespace BH_Player.InputHandle
 {
-    public class InputHandler: MonoBehaviour
+    public class InputHandler: Singleton<InputHandler>
     {
-        [SerializeField] private InputSwitcher _inputSwitcher;
-        public Vector3 KeyboardInput { get; private set; }
+        public Vector3 RelatedDirection { get; private set; }
+        private Vector3 _keyboardInput;
+        private CameraRelatedDirection _cameraRelatedDirection;
         public UnityAction MouseDown1;
         public UnityAction MouseDown2;
 
-        public static InputHandler Instance;
-
         private void Start()
         {
-            if (Instance != null) Destroy(this);
-            else Instance = this;
+            _cameraRelatedDirection = new CameraRelatedDirection(Camera.main);
         }
 
-        private void Update()
+        public void Update()
         {
-            Debug.Log(KeyboardInput);
-            if (_inputSwitcher.KeyboardInputEnable) HandleKeyboardInput();
-            if (_inputSwitcher.MouseInputEnable) HandleMouseInput();
+             HandleKeyboardInput();
+             HandleMouseInput();
+            
         }
-        
+
         private void HandleMouseInput()
         {
-            if (Input.GetMouseButtonDown(0)) MouseDown1?.Invoke();
+            if (Input.GetMouseButtonDown(0))  MouseDown1?.Invoke();
             if (Input.GetMouseButtonDown(1)) MouseDown2?.Invoke();
         }
 
         private void HandleKeyboardInput()
         {
-            KeyboardInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            _keyboardInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            if (_keyboardInput != Vector3.zero)
+                RelatedDirection = (_cameraRelatedDirection.Get() * _keyboardInput).normalized;
+            else RelatedDirection = Vector3.zero;
         }
-      
 
-
-      
+        
+        public void ClearKeyboardVector()
+        {
+            _keyboardInput = Vector3.zero;
+        }
+        
     }
 }

@@ -1,23 +1,19 @@
 
-using UnityEngine;
+using AbstractSingleton;
+using BH_Player.InputHandle;
 
-namespace Player.Character.InputHandle.Switcher
+namespace Switcher
 {
-    public class InputSwitcher: MonoBehaviour
+    public class InputSwitcher: Singleton<InputSwitcher>, ISwitcher
     {
       
         public bool KeyboardInputEnable { get; private set; }
         public bool MouseInputEnable { get; private set; }
-        
-        private void Start()
-        {
-            EnableInput();
-        }
 
         private void DisableKeyboardInput()
         {
             KeyboardInputEnable = false;
-            
+          //  InputHandler.Instance.ClearKeyboardVector();
         }
 
         private void DisableMouseInput()
@@ -35,16 +31,16 @@ namespace Player.Character.InputHandle.Switcher
             MouseInputEnable = true;
         }
 
-        public void DisableInput()
-        {
-            DisableKeyboardInput();
-            DisableMouseInput();
-        }
-
-        public void EnableInput()
+        public void TurnOn()
         {
             EnableKeyboardInput();
             EnableMouseInput();
+        }
+
+        public void TurnOff()
+        {
+            DisableKeyboardInput();
+            DisableMouseInput();
         }
     }
 }

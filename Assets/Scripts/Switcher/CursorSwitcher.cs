@@ -1,22 +1,18 @@
 using System;
+using AbstractSingleton;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Switcher
 {
-    public class CursorSwitcher: MonoBehaviour
+    public class CursorSwitcher: Singleton<CursorSwitcher>, ISwitcher
     {
-        private void Start()
-        {
-           CursorOff();
-        }
-
-        public void CursorOn()
+        public void TurnOn()
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
-        
-        public void CursorOff()
+
+        public void TurnOff()
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
