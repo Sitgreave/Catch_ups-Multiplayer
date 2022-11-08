@@ -1,50 +1,40 @@
-using BH_Player.InputHandle;
-using Player.Character.Movement;
+using BH_Player.Moving;
 using UnityEngine;
+using Motion = BH_Player.Moving.Motion;
 
-namespace BH_Player.Moving
+namespace Player.Character.Movement
 {
     public class Movement
     {
-        public Movement(MoveAttribute attribute, CharacterController characterController, InputHandler inputHandler)
+        public Movement(MoveAttribute moveAttribute, CharacterController characterController)
         {
-            _attributes = attribute;
-            _characterController = characterController;
-            _transform = _characterController.transform;
-            _inputHandler = inputHandler;
-        }
+            MoveAttribute moveAttribute1 = moveAttribute;
 
-        private readonly MoveAttribute _attributes;
-        private Vector3 _direction => _inputHandler.RelatedDirection;
-        private InputHandler _inputHandler;
-        private Transform _transform;
-        private CharacterController _characterController;
-
-        public void OnUpdate()
-        {
-            if (!DirectionInputed()) return;
-            
-            Moving();
-            Rotating();
+            _motion = new Motion(characterController, moveAttribute1.MoveSpeed);
+            _rotating = new Rotating(characterController.transform, moveAttribute1.RotateSpeed);
         }
         
-        private bool DirectionInputed()
+        private readonly Motion _motion;
+        private readonly Rotating _rotating;
+        private Vector3 _direction;
+
+        public void Move(Vector3 direction)
         {
-            return _direction != Vector3.zero;
+            _direction = direction;
+            Moving();
+            if (_direction == Vector3.zero) return;     
+            Rotating();
         }
         
         private void Moving()
         {
-            _characterController.Move(_direction * _attributes.MoveSpeed * Time.deltaTime);
+            _motion.MoveTo(_direction);
         }
 
         private void Rotating()
         {
-            Quaternion rotation = Quaternion.LookRotation(_direction, Vector3.up);
-            Quaternion.Slerp(_transform.rotation, rotation, _attributes.RotateSpeed * Time.deltaTime);
+            _rotating.Rotate(_direction);
         }
-
-       
-
+        
     }
 }

@@ -1,17 +1,20 @@
 using BH_Player.InputHandle;
-using UnityEngine;
 
 namespace BH_Player.Spell
 {
-    [RequireComponent(typeof(SpellCaster))]
-    public class SpellHandler: MonoBehaviour
+    public class SpellHandler
     {
+        public SpellHandler(SpellCaster caster, Spell mainSpell)
+        {
+            _caster = caster;
+            _mainSpell = mainSpell;
+        }
+
         private SpellCaster _caster;
         private Spell _mainSpell;
         
         private void Start()
         {
-            _caster = GetComponent<SpellCaster>();
             InputHandler.Instance.MouseDown1 += CastMainSpell;
         }
 

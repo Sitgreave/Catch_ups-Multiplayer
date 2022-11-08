@@ -1,24 +1,15 @@
-
 using UnityEngine;
 
 namespace BH_Camera
 {
     public class CameraTarget : MonoBehaviour
     {
-
+        [SerializeField] private Transform _target;
         private CameraTracker _cameraTracker;
 
-        private void Start()
+        public void Initialize(CameraTracker _cameraTracker)
         {
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            if (Camera.main == null) return;
-
-            _cameraTracker = Camera.main.GetComponent<CameraTracker>();
-            _cameraTracker.SetTarget(transform);
+            _cameraTracker.SetTarget(_target);
         }
     }
 }
